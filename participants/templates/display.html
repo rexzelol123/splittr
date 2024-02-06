@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="X-UA-Compatible" content="ie=edge">
+    <title>Registration Form</title>
+    <link rel="shortcut icon" href="#">
+</head>
+<body>
+    <h1> HELLO {{ participant.firstName }}! </h1>
+    <h5></h5>   
+    <ul>
+        <li>First Name: {{ participant.firstName }}</li>
+        <li>Last Name: {{ participant.lastName }}</li>
+        <li>email: {{ participant.email }}</li>
+        <li id= 'participantIDD'>{{ participantID }}</li>
+    </ul>
+    <form id="priceItem">
+        {% csrf_token %}
+    {% for myItem in myItems %}
+        <div>
+            <label>{{ myItem.valItems }}: </label>
+            <input type ="number" id = "payItem{{ forloop.counter }}" min = "1" placeholder = "Enter Value for the Item" required> 
+        </div>
+    {% endfor %}
+    <input type="submit">
+    </form>
+    <body>
+<script type=text/javascript>
+    const count = {{ i }};
+    
+    const partId = document.getElementById('participantIDD').innerHTML
+    console.log(partId)
+    $(document).on('submit', '#priceItem', function(e){
+        e.preventDefault();
+        let total = 0
+        let item = []
+        for(let i = 0; i< count; i++){
+            var totall = parseInt(document.getElementById(`payItem${i+1}`).value)
+            item.push(totall)
+            total = total + totall 
+            console.log(total)
+        }
+        
+        if(count==2){
+            $.ajax({
+                type:'POST',
+                url:'/compute2',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        } else if(count==3){
+            $.ajax({
+                type:'POST',
+                url:'/compute3',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    item3:item[2],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        } else if(count==4){
+            $.ajax({
+                type:'POST',
+                url:'/compute4',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    item3:item[2],
+                    item4:item[3],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        } else if(count==5){
+            $.ajax({
+                type:'POST',
+                url:'/compute5',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    item3:item[2],
+                    item4:item[3],
+                    item5:item[4],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        } else if(count==6){
+            $.ajax({
+                type:'POST',
+                url:'/compute6',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    item3:item[2],
+                    item4:item[3],
+                    item5:item[4],
+                    item6:item[5],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        } else if(count==7){
+            $.ajax({
+                type:'POST',
+                url:'/compute7',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    item3:item[2],
+                    item4:item[3],
+                    item5:item[4],
+                    item6:item[5],
+                    item7:item[6],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        } else if(count==8){
+            $.ajax({
+                type:'POST',
+                url:'/compute8',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    item3:item[2],
+                    item4:item[3],
+                    item5:item[4],
+                    item6:item[5],
+                    item7:item[6],
+                    item8:item[7],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        } else if(count==9){
+            $.ajax({
+                type:'POST',
+                url:'/compute9',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    item3:item[2],
+                    item4:item[3],
+                    item5:item[4],
+                    item6:item[5],
+                    item7:item[6],
+                    item8:item[7],
+                    item9:item[8],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        } else if(count==10){
+            $.ajax({
+                type:'POST',
+                url:'/compute10',
+                data:{
+                    item1:item[0],
+                    item2:item[1],
+                    item3:item[2],
+                    item4:item[3],
+                    item5:item[4],
+                    item6:item[5],
+                    item7:item[6],
+                    item8:item[7],
+                    item9:item[8],
+                    item10:item[9],
+                    partId: partId,
+                    total:total,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+                },
+                success: function(data){
+                    $('h5').html(data)
+                  }
+                  
+            })
+        }
+    })
+</script>

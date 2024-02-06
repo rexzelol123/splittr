@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="X-UA-Compatible" content="ie=edge">
+    <title>Registration Form</title>
+    <link rel="shortcut icon" href="#">
+<!--<link rel="stylesheet" href="style.css" />-->
+  </head>
+  <body>
+    <h1>splittr</h1>
+    <p>A Tool for Fair Allocation of Valued Items using Sealed Bid Method</p>
+    <h5></h5>
+    
+    <form id="participant-form" >
+      {% csrf_token %}
+      <fieldset>
+        <label for="numParticipants">How many participants? </label>
+        <input type="number" id="numParticipants" min="2" max="10" placeholder="Enter Number of Participants" required>
+        <div id="participantFields">
+          <div>
+            <label for="fName0">First Name:</label>
+            <input type="text" id="fName0" name="fName0" placeholder="Enter First Name" required>
+            <label for="lName0">Last Name:</label>
+            <input type="text" id="lName0" name="lName0" placeholder="Enter Last Name" required>
+            <label for="email0">Email:</label>
+            <input type="email" id="email0" name="email0" placeholder="Enter Email" required>
+          </div>
+          <div>
+            <label for="fName1">First Name:</label>
+            <input type="text" id="fName1" name="fName1" placeholder="Enter First Name" required>
+            <label for="lName1">Last Name:</label>
+            <input type="text" id="lName0" name="lName1" placeholder="Enter Last Name" required>
+            <label for="email1">Email:</label>
+           <input type="email" id="email1" name="email1" placeholder="Enter Email" required>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <h2>Valued Items</h2>
+        <label for="numItems">Items: </label> 
+        <input type="number" id="numItems" min="1" max="10" placeholder="Enter Number of Items" required>
+        <div id="itemFields">
+          <div>
+          </div>
+        </div>
+      </fieldset>
+      <input type="submit">
+    </form>
+    <!-- Script -->
+    <script type=text/javascript>
+      
+//FOR ADDING AND REMOVING PARTICIPANTS
+
+const numParticipantsInput = document.getElementById('numParticipants');
+const participantFields = document.getElementById('participantFields');
+
+numParticipantsInput.addEventListener('change', function() {
+  // Remove existing fields
+  while (participantFields.firstChild) {
+    participantFields.removeChild(participantFields.firstChild);
+  }
+
+  // Add new fields
+  const numParticipants = this.value;
+  for (let i = 0; i < numParticipants; i++) {
+    const participantDiv = document.createElement('div');
+    participantDiv.innerHTML = `
+      <label for="fName${i}">First Name:</label>
+      <input type="text" id="fName${i}" name="fName${i}" placeholder="Enter First Name" required>
+      <label for="lName${i}">Last Name:</label>
+      <input type="text" id="lName${i}" name="lName${i}" placeholder="Enter Last Name" required>
+      <label for="email${i}">Email:</label>
+      <input type="email" id="email${i}" name="email${i}" placeholder="Enter Email" required>
+    `;
+    participantFields.appendChild(participantDiv);
+  }
+});
+
+
+
+//FOR ADD AND DELETE ITEMS
+const numitemsInput = document.getElementById('numItems');
+const itemsFields = document.getElementById('itemFields');
+
+numitemsInput.addEventListener('change', function() {
+  // Remove existing fields
+  while (itemsFields.firstChild) {
+    itemsFields.removeChild(itemsFields.firstChild);
+  }
+
+  // Add new fields
+  const numitemsInput = this.value;
+  for (let i = 0; i < numitemsInput; i++) {
+    const itemDiv = document.createElement('div');
+    itemDiv.innerHTML = `
+      <label for="item${i}">Item ${i+1}:</label>
+      <input type="text" id="item${i}" name="item${i}" placeholder="Enter Valued Item" required>
+    `;
+    itemsFields.appendChild(itemDiv);
+  }
+});
+
+// CREATING ID FOR USERS AND ITEMS
+function generateUniqueID() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+ }
+ 
+// FUNCTION THAT DISPLAYS IF THE USER IS COMPLETED OR NOT
+  $(document).on('submit', '#participant-form', function(e){
+    e.preventDefault();
+    let partIDarray = []
+    const numParticipants= document.getElementById('numParticipants').value;
+    const numItems = document.getElementById('numItems').value;
+    const idItem = generateUniqueID();
+    for(let i=0; i<numParticipants; i++){
+      let idPart = generateUniqueID()
+      partIDarray.push(idPart)
+      $.ajax({
+        type:'POST',
+        url:'/create',
+        data:{
+          firstName:$(`#fName${i}`).val(),
+          lastName:$(`#lName${i}`).val(),
+          email:$(`#email${i}`).val(),
+          IDpart: idPart,
+          item_id: idItem,
+          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+        },
+        success: function(data){
+          $('h5').html(data)
+        }
+      })
+
+    }
+    // PASSING THE VALUES OF THE ID OF THE ITEM AND ITEMS
+    
+    for(let i=0; i<numItems; i++){
+      $.ajax({
+        type:'POST',
+        url:'/items',
+        data:{
+          valItems:$(`#item${i}`).val(),
+          IDitems: idItem,
+          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken').val()
+        },
+        success: function(data){
+          $('h5').html(data)
+        }
+      })
+    }
+  })
+    </script>
+  </body>
+</html>
